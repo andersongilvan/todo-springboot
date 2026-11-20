@@ -1,4 +1,4 @@
-package users.service;
+package users.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,14 +18,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public User saveUser(User user) {
-       var userWithEmailDuplicated = this.userRepository.existsByEmail(user.getEmail());
-       if(userWithEmailDuplicated) {
-           throw new ConflictException("O email informado já está em uso.");
-       }
+        var userWithEmailDuplicated = this.userRepository.existsByEmail(user.getEmail());
+        if (userWithEmailDuplicated) {
+            throw new ConflictException("O email informado já está em uso.");
+        }
 
-       var passwordHash = this.passwordEncoder.encode(user.getPasswordHash());
-       user.setPasswordHash(passwordHash);
-       return this.userRepository.save(user);
+        var passwordHash = this.passwordEncoder.encode(user.getPasswordHash());
+        user.setPasswordHash(passwordHash);
+        return this.userRepository.save(user);
     }
 
     public User findUserByEmail(String email) {
