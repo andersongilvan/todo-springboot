@@ -61,6 +61,18 @@ public class JwtService {
     }
 
     /**
+     * Valida um REFRESH token (recusa access tokens) e retorna o id do usuário (subject).
+     */
+    public String validateRefreshToken(String token) throws JWTVerificationException {
+        return JWT.require(Algorithm.HMAC256(this.jwtSecret))
+                .withIssuer(ISSUER)
+                .withClaim("type", TokenType.REFRESH_TOKEN.name())
+                .build()
+                .verify(token)
+                .getSubject();
+    }
+
+    /**
      * Valida assinatura, issuer e expiração. Lança JWTVerificationException se inválido.
      */
     public String validateToken(String token) throws JWTVerificationException {
