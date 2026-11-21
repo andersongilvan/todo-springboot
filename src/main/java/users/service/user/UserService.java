@@ -1,6 +1,8 @@
 package users.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import users.entity.User;
@@ -16,6 +18,10 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    public Page<User> searchUsers(String search, Pageable pageable) {
+        return this.userRepository.search(search, pageable);
+    }
 
     public User saveUser(User user) {
         var userWithEmailDuplicated = this.userRepository.existsByEmail(user.getEmail());
